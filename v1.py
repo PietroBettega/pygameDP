@@ -1,16 +1,21 @@
 import pygame as py
+from pygame import mixer
 
 #Tamanho da tela
 WIDTH=1200
 HEIGHT=700
 
-#Iniciando
+#Iniciando jogo e música
 py.init()
+mixer.init()
 
-#Abrindo a Tela
+#Abrindo a Tela e Música
 
 screen=py.display.set_mode((WIDTH,HEIGHT))
 py.display.set_caption("Batalha das Feras")
+mixer.music.load("C:/Users/pbett/OneDrive/Área de Trabalho/DESIGN DE SOFTWARE 1B/DP desoft/imagensjogo/background_music.mp3")
+mixer.music.set_volume(0.7)
+mixer.music.play(-1)
 
 #Clock
 
@@ -37,5 +42,7 @@ while game:
     py.display.update()
 
 
-#Fechando
+#Fechando jogo e música
+mixer.music.stop()
+mixer.quit()
 py.quit()
