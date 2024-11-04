@@ -13,7 +13,7 @@ mixer.init()
 
 screen=py.display.set_mode((WIDTH,HEIGHT))
 py.display.set_caption("Batalha das Feras")
-mixer.music.load("C:/Users/pbett/OneDrive/Área de Trabalho/DESIGN DE SOFTWARE 1B/DP desoft/imagensjogo/background_music.mp3")
+mixer.music.load("background_music.mp3")
 mixer.music.set_volume(0.7)
 mixer.music.play(-1)
 
@@ -25,7 +25,7 @@ clock=py.time.Clock()
 #Funções do jogo
 
 def limpa_screen():
-    imagem_fundo=py.image.load("C:/Users/pbett/OneDrive/Área de Trabalho/DESIGN DE SOFTWARE 1B/DP desoft/imagensjogo/ancient-eastern-scene-character-platform-background_1023080-6686.jpg")
+    imagem_fundo=py.image.load("PyGame Fundo.webp")
     imagem_fundo=py.transform.scale(imagem_fundo,(WIDTH,HEIGHT))
     screen.blit(imagem_fundo,(0,0))
 
