@@ -31,13 +31,14 @@ class Personagem:
         self.posicao_y = posicao_y
 
     def desenhar_personagem(self):
-        personagem_imagem = py.image.load(r'')
-        screen.blit(personagem_imagem, (100,300))
+        personagem_imagem = py.image.load(r'./assets/' + self.nome_imagem + 'png')
+        screen.blit(personagem_imagem, (self.posicao_x,self.posicao_y))
 
 #Aplicando os personagens
 
-personagem_mon = ('Monstro','Mon',100, 300)
-personagem_demon = ('Demon','boss_demon_slime_FREE_v1.0', 600, 300)
+personagem_mon = ('Monstro','idle_1.png',100, 300)
+personagem_demon = ('Demon','demon_idle_1.png', 600, 300)
+
 
 
 #Funções do jogo
@@ -47,6 +48,8 @@ def limpa_screen():
     imagem_fundo=py.transform.scale(imagem_fundo,(WIDTH,HEIGHT))
     screen.blit(imagem_fundo,(0,0))
 
+    personagem_mon.desenhar_personagem()
+    personagem_demon.desenhar_personagem()
 #Loop do jogo
 
 game=True
