@@ -13,7 +13,7 @@ mixer.init()
 
 screen=py.display.set_mode((WIDTH,HEIGHT))
 py.display.set_caption("Batalha das Feras")
-mixer.music.load("background_music.mp3")
+mixer.music.load("assets/background_music.mp3")
 mixer.music.set_volume(0.7)
 mixer.music.play(-1)
 
@@ -40,23 +40,10 @@ personagem_mon = ('Monstro','Mon',100, 300)
 personagem_demon = ('Demon','boss_demon_slime_FREE_v1.0', 600, 300)
 
 
-
 #Funções do jogo
 
 def limpa_screen():
-    imagem_fundo=py.image.load("PyGame Fundo.webp")
-    imagem_fundo=py.transform.scale(imagem_fundo,(WIDTH,HEIGHT))
-    screen.blit(imagem_fundo,(0,0))
-
-    personagem_imagem = py.image.load(r'')
-    screen.blit(personagem_imagem, (100,300))
-
-
-
-#Funções do jogo
-
-def limpa_screen():
-    imagem_fundo=py.image.load("PyGame Fundo.webp")
+    imagem_fundo=py.image.load("assets/PyGame Fundo.webp")
     imagem_fundo=py.transform.scale(imagem_fundo,(WIDTH,HEIGHT))
     screen.blit(imagem_fundo,(0,0))
 
