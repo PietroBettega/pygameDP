@@ -22,6 +22,14 @@ mixer.music.play(-1)
 FPS=30
 clock=py.time.Clock()
 
+#Criando personagens
+class Personagem:
+    def __init__(self,nome,posicao_x,posicao_y):
+        self.nome = nome
+        self.posicao_x = posicao_x
+        self.posicao_y = posicao_y
+
+
 #Funções do jogo
 
 def limpa_screen():
