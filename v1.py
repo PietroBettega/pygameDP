@@ -30,8 +30,12 @@ class Personagem:
         self.posicao_x = posicao_x
         self.posicao_y = posicao_y
 
-    def desenhar_personagem(self):
-        personagem_imagem = py.image.load(r'./assets/' + self.nome_imagem + 'png')
+    def desenhar_demonio(self):
+        personagem_imagem = py.image.load(r'./assets/demo' + self.nome_imagem + 'png')
+        screen.blit(personagem_imagem, (self.posicao_x,self.posicao_y))
+
+    def desenhar_monstro(self):
+        personagem_imagem = py.image.load(r'./assets/mon' + self.nome_imagem + 'png')
         screen.blit(personagem_imagem, (self.posicao_x,self.posicao_y))
 
 #Aplicando os personagens
