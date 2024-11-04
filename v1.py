@@ -30,9 +30,13 @@ class Personagem:
         self.posicao_x = posicao_x
         self.posicao_y = posicao_y
 
+    def desenhar_personagem(self):
+        personagem_imagem = py.image.load(r'')
+        screen.blit(personagem_imagem, (100,300))
+
 #Aplicando os personagens
 
-personagem_nightborne = ('NightBorne','NightBorne',100, 300)
+personagem_mon = ('Monstro','Mon',100, 300)
 personagem_demon = ('Demon','boss_demon_slime_FREE_v1.0', 600, 300)
 
 
