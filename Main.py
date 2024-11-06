@@ -1,5 +1,4 @@
 import pygame as py
-from pygame import mixer
 from funcoes import *
 from animacoes import *
 from config import *
