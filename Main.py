@@ -4,14 +4,6 @@ from funcoes import *
 from animacoes import *
 from config import *
 
-#Tamanho da tela
-WIDTH=1200
-HEIGHT=700
-
-#Criando personagens
-
-
-    
 #Loop do jogo
 
 game=True
