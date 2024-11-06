@@ -1,16 +1,23 @@
-# import pygame as py
+import pygame as py
+from funcoes import *
+from funcoes import Personagem
 
 
 # #Tamanho da tela
 
-# WIDTH=1200
-# HEIGHT=700
+WIDTH=1200
+HEIGHT=700
 
-# #Clock
+#Clock
 
-# FPS=30
-# clock=py.time.Clock()
+FPS=30
+clock=py.time.Clock()
 
-# #Abrindo a Tela e Música
+# Abrindo a Tela e Música
 
-# screen=py.display.set_mode((WIDTH,HEIGHT))
+screen=py.display.set_mode((WIDTH,HEIGHT))
+
+# Monstros 
+
+mon = Personagem('Monstro','idle_1',-250, 200)
+demon = Personagem('Demon','demon_idle_1', 620, 100)
