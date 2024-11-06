@@ -44,3 +44,11 @@ class Personagem:
         if self.last_img_change > 2:
             self.last_img_change = 0
             self.current_image = (self.current_image + 1) % len(mon_images[self.state])
+    #Atualiza posição
+    self.posicao_x= self.posicao_x + self.x_speed
+    if self.posicao_x < 0:
+        self.posicao_x=0
+        self.state = 'idle'
+    if self.posicao_x > 950:
+        self.posicao_x = 950
+        self.state = 'idle'
