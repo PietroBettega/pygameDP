@@ -8,30 +8,6 @@ from config import *
 WIDTH=1200
 HEIGHT=700
 
-#Iniciando jogo e música
-py.init()
-mixer.init()
-
-#Abrindo a Tela e Música
-
-screen=py.display.set_mode((WIDTH,HEIGHT))
-py.display.set_caption("Batalha das Feras")
-mixer.music.load("assets/background_music.mp3")
-mixer.music.set_volume(0.7)
-mixer.music.play(-1)
-imagem_fundo=py.image.load("assets/PyGame Fundo.webp")
-imagem_fundo=py.transform.scale(imagem_fundo,(WIDTH,HEIGHT))
-
-
-#Animação demon
-
-
-
-#Clock
-
-FPS=30
-clock=py.time.Clock()
-
 #Criando personagens
 
 class Personagem:
@@ -76,18 +52,7 @@ class Personagem:
     if self.posicao_x > 950:
         self.posicao_x = 950
         self.state = 'idle'
-#Aplicando os personagens
 
-
-
-
-#Funções do jogo
-
-def limpa_screen():
-    
-    screen.blit(imagem_fundo,(0,0))
-    mon.desenhar_monstro()
-    demon.desenhar_demonio()
     
 #Loop do jogo
 
@@ -132,6 +97,3 @@ while game:
 
 
 #Fechando jogo e música
-mixer.music.stop()
-mixer.quit()
-py.quit()
