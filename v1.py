@@ -31,17 +31,18 @@ class Personagem:
         self.posicao_y = posicao_y
 
     def desenhar_demonio(self):
-        personagem_imagem = py.image.load(r'./assets/demo' + self.nome_imagem + 'png')
-        screen.blit(personagem_imagem, (self.posicao_x,self.posicao_y))
+        personagem_demon = py.image.load(("assets/Demo idle/01_demon_idle/demon_idle_1.png"), 100,100)
+        personagem_demon=py.transform.scale2x(personagem_demon)
+        screen.blit(personagem_demon, (self.posicao_x,self.posicao_y))
 
     def desenhar_monstro(self):
-        personagem_imagem = py.image.load(r'./assets/mon' + self.nome_imagem + 'png')
-        screen.blit(personagem_imagem, (self.posicao_x,self.posicao_y))
-
+        personagem_mon = py.image.load("assets/Mon idle/idle/idle_1.png")
+        personagem_mon=py.transform.scale2x(personagem_mon)
+        screen.blit(personagem_mon, (self.posicao_x,self.posicao_y))
 #Aplicando os personagens
 
-personagem_mon = ('Monstro','idle_1.png',100, 300)
-personagem_demon = ('Demon','demon_idle_1.png', 600, 300)
+mon = Personagem('Monstro','idle_1',600, 220)
+demon = Personagem('Demon','demon_idle_1', 100, 350)
 
 
 
@@ -52,8 +53,8 @@ def limpa_screen():
     imagem_fundo=py.transform.scale(imagem_fundo,(WIDTH,HEIGHT))
     screen.blit(imagem_fundo,(0,0))
 
-    personagem_mon.desenhar_personagem()
-    personagem_demon.desenhar_personagem()
+    mon.desenhar_demonio()
+    demon.desenhar_monstro()
 #Loop do jogo
 
 game=True
