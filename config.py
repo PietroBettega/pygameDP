@@ -1,16 +1,16 @@
-import pygame as py
+# import pygame as py
 
 
-#Tamanho da tela
+# #Tamanho da tela
 
-WIDTH=1200
-HEIGHT=700
+# WIDTH=1200
+# HEIGHT=700
 
-#Clock
+# #Clock
 
-FPS=30
-clock=py.time.Clock()
+# FPS=30
+# clock=py.time.Clock()
 
-#Abrindo a Tela e Música
+# #Abrindo a Tela e Música
 
-screen=py.display.set_mode((WIDTH,HEIGHT))
+# screen=py.display.set_mode((WIDTH,HEIGHT))
