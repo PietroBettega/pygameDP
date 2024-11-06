@@ -31,18 +31,20 @@ class Personagem:
         self.posicao_y = posicao_y
 
     def desenhar_demonio(self):
-        personagem_demon = py.image.load(("assets/Demo idle/01_demon_idle/demon_idle_1.png"), 100,100)
-        personagem_demon=py.transform.scale2x(personagem_demon)
+        #personagem_demon = py.image.load("assets/Demo idle/01_demon_idle/demon_idle_1.png")
+        personagem_demon=py.transform.scale(py.image.load("assets/Demo idle/01_demon_idle/demon_idle_1.png").convert_alpha(),
+        (864,480))
         screen.blit(personagem_demon, (self.posicao_x,self.posicao_y))
 
     def desenhar_monstro(self):
-        personagem_mon = py.image.load("assets/Mon idle/idle/idle_1.png")
-        personagem_mon=py.transform.scale2x(personagem_mon)
+        #personagem_mon = py.image.load("assets/Mon idle/idle/idle_1.png")
+        personagem_mon=py.transform.scale(py.image.load("assets/Mon idle/idle/idle_1.png").convert_alpha(),
+        (768,448))
         screen.blit(personagem_mon, (self.posicao_x,self.posicao_y))
 #Aplicando os personagens
 
-mon = Personagem('Monstro','idle_1',600, 220)
-demon = Personagem('Demon','demon_idle_1', 100, 350)
+mon = Personagem('Monstro','idle_1',600, 150)
+demon = Personagem('Demon','demon_idle_1', -220, 240)
 
 
 
