@@ -39,6 +39,18 @@ while game:
                 mon.state = 'idle'
                 mon.current_image = 0
 
+        Tempo=py.time.get_ticks()
+
+        if Tempo - demon.update_time>=100:
+            demon.update_time=Tempo
+            demon.frame=demon.frame + 1
+        
+        Tempo_imagem=demon.status + str(demon.frame) + '.png'
+        if Tempo_imagem not in demon_images:
+            if demon.status=='k' or demon.status=='p':
+                demon.status='i'
+            demon.frame=0
+
     demon.update_demon()
     mon.update_mon()
     limpa_screen()
