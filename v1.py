@@ -86,7 +86,7 @@ class Personagem:
 
     def update_demon(self):
         self.last_img_change += 1
-        if self.last_img_change > 1:
+        if self.last_img_change > 5:
             self.last_img_change = 0
             self.current_image = (self.current_image + 1) % len(demon_images[self.state])
             if self.state == 'beating' and self.current_image == 0:
