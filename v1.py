@@ -121,33 +121,43 @@ while game:
             game = False
         if event.type == py.KEYDOWN:
             # Direita
-            if event.key == py.K_d:
+            if event.key == py.K_LEFT:
                 demon.state = 'walking'
                 demon.x_speed = 10
                 demon.current_image = 0
-            if event.key == py.K_LEFT:
+            if event.key == py.K_d:
                 mon.state = 'walking'
                 mon.x_speed = -10
                 mon.current_image = 0
             # Esquerda
-            if event.key == py.K_a:
+            if event.key == py.K_RIGHT:
                 demon.state = 'walking'
                 demon.x_speed = -10
                 demon.current_image = 0
-            if event.key == py.K_RIGHT:
+            if event.key == py.K_a:
                 mon.state = 'walking'
                 mon.x_speed = 10
                 mon.current_image = 0
+            #Batendo
+            if event.key == K_SPACE:
+                demon.state = 'beating'
+                demon.current_image = 0
+            if event.key == K_r:
+                mon.state = 'beating'
+                mon.current_image = 0
+            
 
         if event.type == py.KEYUP:
-            if event.key in [py.K_d, py.K_a]:
+            if event.key in [py.K_LEFT, py.K_RIGHT]:
                 demon.state = 'idle'
                 demon.x_speed = 0
                 demon.current_image = 0
-            if event.key in [py.K_LEFT, py.K_RIGHT]:
+            if event.key in [py.K_d, py.K_a]:
                 mon.state = 'idle'
                 mon.x_speed = 0
                 mon.current_image = 0
+
+
 
     demon.update_demon()
     mon.update_mon()
