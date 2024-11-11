@@ -86,7 +86,7 @@ class Personagem:
 
     def update_demon(self):
         self.last_img_change += 1
-        if self.last_img_change > 5:
+        if self.last_img_change > 1:
             self.last_img_change = 0
             self.current_image = (self.current_image + 1) % len(demon_images[self.state])
         self.posicao_x += self.x_speed
@@ -123,26 +123,26 @@ while game:
             # Direita
             if event.key == py.K_LEFT:
                 demon.state = 'walking'
-                demon.x_speed = 10
+                demon.x_speed = -10
                 demon.current_image = 0
             if event.key == py.K_d:
                 mon.state = 'walking'
-                mon.x_speed = -10
+                mon.x_speed = 10
                 mon.current_image = 0
             # Esquerda
             if event.key == py.K_RIGHT:
                 demon.state = 'walking'
-                demon.x_speed = -10
+                demon.x_speed = 10
                 demon.current_image = 0
             if event.key == py.K_a:
                 mon.state = 'walking'
-                mon.x_speed = 10
+                mon.x_speed = -10
                 mon.current_image = 0
             #Batendo
-            if event.key == K_SPACE:
+            if event.key == py.K_SPACE:
                 demon.state = 'beating'
                 demon.current_image = 0
-            if event.key == K_r:
+            if event.key == py.K_r:
                 mon.state = 'beating'
                 mon.current_image = 0
             
