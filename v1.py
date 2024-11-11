@@ -89,6 +89,8 @@ class Personagem:
         if self.last_img_change > 1:
             self.last_img_change = 0
             self.current_image = (self.current_image + 1) % len(demon_images[self.state])
+            if self.state == 'beating' and self.current_image == 0:
+                self.state = 'idle'
         self.posicao_x += self.x_speed
 
     def desenhar_monstro(self):
@@ -100,6 +102,8 @@ class Personagem:
         if self.last_img_change > 2:
             self.last_img_change = 0
             self.current_image = (self.current_image + 1) % len(mon_images[self.state])
+            if self.state == 'beating' and self.current_image == 0:
+                self.state = 'idle'
         self.posicao_x += self.x_speed
 
 # Aplicando os personagens
@@ -138,14 +142,13 @@ while game:
                 mon.state = 'walking'
                 mon.x_speed = -10
                 mon.current_image = 0
-            #Batendo
+            # Batendo
             if event.key == py.K_SPACE:
                 demon.state = 'beating'
                 demon.current_image = 0
             if event.key == py.K_r:
                 mon.state = 'beating'
                 mon.current_image = 0
-            
 
         if event.type == py.KEYUP:
             if event.key in [py.K_LEFT, py.K_RIGHT]:
@@ -156,8 +159,6 @@ while game:
                 mon.state = 'idle'
                 mon.x_speed = 0
                 mon.current_image = 0
-
-
 
     demon.update_demon()
     mon.update_mon()
