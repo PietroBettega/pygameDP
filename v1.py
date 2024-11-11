@@ -77,6 +77,7 @@ class Personagem:
         self.posicao_y = posicao_y
         self.state = 'idle'
         self.x_speed = 0
+        self.y_speed=0
         self.current_image = 1
         self.last_img_change = 0
 
@@ -89,9 +90,8 @@ class Personagem:
         if self.last_img_change > 5:
             self.last_img_change = 0
             self.current_image = (self.current_image + 1) % len(demon_images[self.state])
-            if self.state == 'beating' and self.current_image == 0:
-                self.state = 'idle'
         self.posicao_x += self.x_speed
+        self.posicao_y += self.y_speed
 
     def desenhar_monstro(self):
         personagem_mon = mon_images[self.state][self.current_image]
@@ -102,9 +102,23 @@ class Personagem:
         if self.last_img_change > 2:
             self.last_img_change = 0
             self.current_image = (self.current_image + 1) % len(mon_images[self.state])
-            if self.state == 'beating' and self.current_image == 0:
-                self.state = 'idle'
         self.posicao_x += self.x_speed
+        self.posicao_y += self.y_speed
+
+# Mantém na tela
+
+        if self.rec.right > WIDTH:
+            self.rect.right = WIDTH
+        if self.rect.left<0:
+            self.rect.left = 0
+        if self.rect.top<0:
+            self.rect.top=0
+        if self.rect.bottom>HEIGHT-10:
+            self.rect.bottom= HEIGHT-10
+        elif self.rect.bottom<HEIGHT-10:
+            self.y_speed = self.y_speed+4
+        elif self.rect.bottom == HEIGHT-10:
+            self.y_speed=0
 
 # Aplicando os personagens
 mon = Personagem('Monstro', 'idle_1', -250, 200)
