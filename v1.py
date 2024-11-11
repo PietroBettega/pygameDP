@@ -77,34 +77,102 @@ class Personagem:
         self.posicao_y = posicao_y
         self.state = 'idle'
         self.x_speed = 0
+        self.y_speed = 0
         self.current_image = 1
         self.last_img_change = 0
+        self.no_chao = True
+        self.hit_duracao = 10
+        self.hit_tempo=0
 
     def desenhar_demonio(self):
         personagem_demon = demon_images[self.state][self.current_image]
         screen.blit(personagem_demon, (self.posicao_x, self.posicao_y))
 
-    def update_demon(self):
-        self.last_img_change += 1
-        if self.last_img_change > 5:
-            self.last_img_change = 0
-            self.current_image = (self.current_image + 1) % len(demon_images[self.state])
-            if self.state == 'beating' and self.current_image == 0:
-                self.state = 'idle'
-        self.posicao_x += self.x_speed
-
     def desenhar_monstro(self):
         personagem_mon = mon_images[self.state][self.current_image]
         screen.blit(personagem_mon, (self.posicao_x, self.posicao_y))
 
+    def update_demon(self):
+        self.last_img_change += 1
+        if self.state == 'hit':
+            self.hit_tempo += 1
+            if self.hit_tempo >= self.hit_duracao:
+                self.state = 'idle'
+                self.hit_tempo = 0
+            return
+        if self.state == 'beating' and self.last_img_change > 1:
+            self.last_img_change = 0
+            self.current_image = (self.current_image + 1) % len(demon_images[self.state])
+            if self.current_image == 0:
+                self.state = 'idle'
+        elif self.last_img_change > 5:
+            self.last_img_change = 0
+            self.current_image = (self.current_image + 1) % len(demon_images[self.state])
+
+        # Aplicar movimento horizontal
+        self.posicao_x += self.x_speed
+        # Impedir de sair da tela
+        if self.posicao_x < 0:
+            self.posicao_x = 0
+        elif self.posicao_x + 864 > WIDTH:  # 864 é a largura do personagem demon
+            self.posicao_x = WIDTH - 864
+
+        # Movimento vertical (pulo)
+        if not self.no_chao:
+            self.y_speed += 1  # Gravidade
+            self.posicao_y += self.y_speed
+            # Verificar se tocou o chão
+            if self.posicao_y >= 100:  # Posição inicial no chão
+                self.posicao_y = 100
+                self.no_chao = True
+                self.y_speed = 0
+
     def update_mon(self):
         self.last_img_change += 1
-        if self.last_img_change > 2:
+        if self.state == 'hit':
+            self.hit_tempo += 1
+            if self.hit_tempo >= self.hit_duracao:
+                self.state = 'idle'
+                self.hit_tempo = 0
+            return
+        if self.state == 'beating' and self.last_img_change > 2:
             self.last_img_change = 0
             self.current_image = (self.current_image + 1) % len(mon_images[self.state])
-            if self.state == 'beating' and self.current_image == 0:
+            if self.current_image == 0:
                 self.state = 'idle'
+        elif self.last_img_change > 5:
+            self.last_img_change = 0
+            self.current_image = (self.current_image + 1) % len(mon_images[self.state])
+
+        # Aplicar movimento horizontal
         self.posicao_x += self.x_speed
+        # Impedir de sair da tela
+        if self.posicao_x < 0:
+            self.posicao_x = 0
+        elif self.posicao_x + 768 > WIDTH:  # 768 é a largura do personagem mon
+            self.posicao_x = WIDTH - 768
+
+        # Movimento vertical (pulo)
+        if not self.no_chao:
+            self.y_speed += 1  # Gravidade
+            self.posicao_y += self.y_speed
+            # Verificar se tocou o chão
+            if self.posicao_y >= 200:  # Posição inicial no chão
+                self.posicao_y = 200
+                self.no_chao = True
+                self.y_speed = 0
+
+# Função de colisão para dano
+def verificar_colisao():
+    if abs(demon.posicao_x - mon.posicao_x) < 100:  # Distância mínima para colisão
+        if demon.state == 'beating' and mon.state != 'hit':
+            mon.state = 'hit'
+            mon.current_image = 0
+            mon.hit_tempo=0
+        elif mon.state == 'beating' and demon.state != 'hit':
+            demon.state = 'hit'
+            demon.current_image = 0
+            demon.hit_tempo=0
 
 # Aplicando os personagens
 mon = Personagem('Monstro', 'idle_1', -250, 200)
@@ -124,7 +192,7 @@ while game:
         if event.type == py.QUIT:
             game = False
         if event.type == py.KEYDOWN:
-            # Direita
+            # Movimentos
             if event.key == py.K_LEFT:
                 demon.state = 'walking'
                 demon.x_speed = -10
@@ -133,7 +201,6 @@ while game:
                 mon.state = 'walking'
                 mon.x_speed = 10
                 mon.current_image = 0
-            # Esquerda
             if event.key == py.K_RIGHT:
                 demon.state = 'walking'
                 demon.x_speed = 10
@@ -142,7 +209,14 @@ while game:
                 mon.state = 'walking'
                 mon.x_speed = -10
                 mon.current_image = 0
-            # Batendo
+            # Pulo
+            if event.key == py.K_w and mon.no_chao:
+                mon.y_speed = -15  # Força do pulo
+                mon.no_chao = False
+            if event.key == py.K_UP and demon.no_chao:
+                demon.y_speed = -15
+                demon.no_chao = False
+            # Ataque
             if event.key == py.K_SPACE:
                 demon.state = 'beating'
                 demon.current_image = 0
@@ -162,6 +236,7 @@ while game:
 
     demon.update_demon()
     mon.update_mon()
+    verificar_colisao()
     limpa_screen()
     py.display.update()
 
@@ -169,3 +244,4 @@ while game:
 mixer.music.stop()
 mixer.quit()
 py.quit()
+
