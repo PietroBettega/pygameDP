@@ -68,9 +68,6 @@ mon_images['hit'] = img_list
 FPS = 30
 clock = py.time.Clock()
 
-vida_mon = 100
-vida_demon = 100
-
 # Criando personagens
 class Personagem(py.sprite.Sprite):
     def __init__(self, nome, nome_imagem, posicao_x, posicao_y):
@@ -87,6 +84,7 @@ class Personagem(py.sprite.Sprite):
         self.no_chao = True
         self.hit_duracao = 10
         self.hit_tempo = 0
+        self.vida = 100
 
     def desenhar_demonio(self):
         personagem_demon = demon_images[self.state][self.current_image]
@@ -97,7 +95,9 @@ class Personagem(py.sprite.Sprite):
         screen.blit(personagem_mon, (self.posicao_x, self.posicao_y))
 
     def update_demon(self):
-        # Atualizar a animação e movimento do demônio
+        if self.vida <= 0:
+            self.state = 'death'
+            return
         self.last_img_change += 1
         if self.state == 'hit':
             self.hit_tempo += 1
@@ -114,16 +114,18 @@ class Personagem(py.sprite.Sprite):
             self.last_img_change = 0
             self.current_image = (self.current_image + 1) % len(demon_images[self.state])
 
-        # Aplicar movimento horizontal
+        # Aplicar movimento horizontal com nova margem
         self.posicao_x += self.x_speed
-        # Impedir de sair da tela
-        if self.posicao_x < 0:
-            self.posicao_x = 0
-        elif self.posicao_x + 864 > WIDTH:
-            self.posicao_x = WIDTH - 864
+        margin = 300  # Margem adicional para movimento nas bordas da tela
+        if self.posicao_x < -margin:
+            self.posicao_x = -margin
+        elif self.posicao_x + 864 > WIDTH + margin:
+            self.posicao_x = WIDTH - 864 + margin
 
     def update_mon(self):
-        # Atualizar a animação e movimento do monstro
+        if self.vida <= 0:
+            self.state = 'death'
+            return
         self.last_img_change += 1
         if self.state == 'hit':
             self.hit_tempo += 1
@@ -140,29 +142,28 @@ class Personagem(py.sprite.Sprite):
             self.last_img_change = 0
             self.current_image = (self.current_image + 1) % len(mon_images[self.state])
 
-        # Aplicar movimento horizontal
-        self.posicao_x += self.x_speed
-        # Impedir de sair da tela
-        if self.posicao_x < 0:
-            self.posicao_x = 0
-        elif self.posicao_x + 768 > WIDTH:
-            self.posicao_x = WIDTH - 768
+        # Aplicar movimento horizontal com nova margem
+        self.posicao_x += self.x_speed  
+        margin = 255  # Margem adicional para movimento nas bordas da tela
+        if self.posicao_x < -margin:
+            self.posicao_x = -margin
+        elif self.posicao_x + 768 > WIDTH + margin:
+            self.posicao_x = WIDTH - 768 + margin
 
 # Função de colisão para dano
 def verificar_colisao():
-    if abs(demon.posicao_x - mon.posicao_x) < 100:
-        if demon.state == 'beating' and mon.state != 'hit':
-            mon.state = 'hit'
-            mon.current_image = 0
-            mon.hit_tempo = 0
-            global vida_mon
-            vida_mon -= 10
-        elif mon.state == 'beating' and demon.state != 'hit':
-            demon.state = 'hit'
-            demon.current_image = 0
-            demon.hit_tempo = 0
-            global vida_demon
-            vida_demon -= 10
+    if demon.vida > 0 and mon.vida > 0:
+        if abs(demon.posicao_x - mon.posicao_x) < 300:
+            if demon.state == 'beating' and mon.state != 'hit':
+                mon.state = 'hit'
+                mon.current_image = 0
+                mon.hit_tempo = 0
+                mon.vida -= 6
+            elif mon.state == 'beating' and demon.state != 'hit':
+                demon.state = 'hit'
+                demon.current_image = 0
+                demon.hit_tempo = 0
+                demon.vida -= 9
 
 # Aplicando os personagens
 mon = Personagem('Monstro', 'idle_1', -250, 200)
@@ -171,45 +172,61 @@ demon = Personagem('Demon', 'demon_idle_1', 620, 100)
 # Funções do jogo
 def limpa_screen():
     screen.blit(imagem_fundo, (0, 0))
-    mon.desenhar_monstro()
-    demon.desenhar_demonio()
+    
+    # Desenhando as barras de vida
+    # Barra de vida do monstro
+    mon_health_ratio = mon.vida / 100
+    py.draw.rect(screen, (255, 0, 0), (50, 50, 500, 25))  # Barra de vida vermelha (fundo)
+    py.draw.rect(screen, (0, 255, 0), (50, 50, 500 * mon_health_ratio, 25))  # Barra de vida verde
+    
+    # Barra de vida do demônio
+    demon_health_ratio = demon.vida / 100
+    py.draw.rect(screen, (255, 0, 0), (WIDTH - 550, 50, 500, 25))  # Barra de vida vermelha (fundo)
+    py.draw.rect(screen, (0, 255, 0), (WIDTH - 550, 50, 500 * demon_health_ratio, 25))  # Barra de vida verde
+    
+    # Desenha os personagens
+    if demon.vida > 0:
+        demon.desenhar_demonio()
+    if mon.vida > 0:
+        mon.desenhar_monstro()
 
 # Loop do jogo
 game = True
 while game:
     clock.tick(FPS)
+    
+    # Termina o jogo se um dos personagens estiver morto
+    if demon.vida <= 0 or mon.vida <= 0:
+        game = False
+    
     for event in py.event.get():
         if event.type == py.QUIT:
             game = False
         if event.type == py.KEYDOWN:
-            if event.key == py.K_LEFT:
-                demon.state = 'walking'
-                demon.x_speed = -10
-                demon.current_image = 0
-            if event.key == py.K_d:
-                mon.state = 'walking'
-                mon.x_speed = 10
-                mon.current_image = 0
-            if event.key == py.K_RIGHT:
-                demon.state = 'walking'
-                demon.x_speed = 10
-                demon.current_image = 0
-            if event.key == py.K_a:
-                mon.state = 'walking'
-                mon.x_speed = -10
-                mon.current_image = 0
-            if event.key == py.K_w and mon.no_chao:
-                mon.y_speed = -15
-                mon.no_chao = False
-            if event.key == py.K_UP and demon.no_chao:
-                demon.y_speed = -15
-                demon.no_chao = False
-            if event.key == py.K_SPACE:
-                demon.state = 'beating'
-                demon.current_image = 0
-            if event.key == py.K_r:
-                mon.state = 'beating'
-                mon.current_image = 0
+            if demon.vida > 0:
+                if event.key == py.K_LEFT:
+                    demon.state = 'walking'
+                    demon.x_speed = -10
+                    demon.current_image = 0
+                if event.key == py.K_RIGHT:
+                    demon.state = 'walking'
+                    demon.x_speed = 10
+                    demon.current_image = 0
+                if event.key == py.K_SPACE:
+                    demon.state = 'beating'
+                    demon.current_image = 0
+            if mon.vida > 0:
+                if event.key == py.K_d:
+                    mon.state = 'walking'
+                    mon.x_speed = 10
+                    mon.current_image = 0
+                if event.key == py.K_a:
+                    mon.state = 'walking'
+                    mon.x_speed = -10
+                    mon.current_image = 0
+                if event.key == py.K_r:
+                    mon.state = 'beating'
+                    mon.current_image = 0
 
         if event.type == py.KEYUP:
             if event.key in [py.K_LEFT, py.K_RIGHT]:
