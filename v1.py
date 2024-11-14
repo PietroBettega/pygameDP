@@ -20,7 +20,7 @@ imagem_fundo = py.transform.scale(imagem_fundo, (WIDTH, HEIGHT))
 
 def tela_inicio():
     # Carrega a imagem de fundo da tela inicial
-    imagem_fundo_inicio = py.image.load("INICIO.jpg")
+    imagem_fundo_inicio = py.image.load("assets/INICIO.jpg")
     imagem_fundo_inicio = py.transform.scale(imagem_fundo_inicio, (WIDTH, HEIGHT))
     # Parâmetros do botão
     botao_largura = 300
