@@ -4,3 +4,12 @@
 
 # Alunos: [ Enrico Berto, Pietro Bettega, João Pedro Hugues ]
 
+# Nome : Batalha das feras
+
+# D -> Monstro anda para a direita
+# A -> Monstro anda para a esquerda
+# R -> Monstro ataca
+
+# Seta p/ direita -> Demon anda para a direita
+# Seta p/ esquerda -> Demon anda para a esquerda
+# Espaço -> Demon ataca
