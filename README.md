@@ -6,6 +6,8 @@
 
 # Nome : Batalha das feras
 
+# Para iniciar o jogo clicar no botão 'inciar jogo'
+
 # D -> Monstro anda para a direita
 # A -> Monstro anda para a esquerda
 # R -> Monstro ataca
